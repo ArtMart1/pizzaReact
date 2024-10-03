@@ -15,17 +15,19 @@ function App() {
     fetchData();
   }, []);
   return (
-    <div class="wrapper">
+    <div className="wrapper">
       <Header></Header>
-      <div class="content">
-        <div class="container">
-          <div class="content__top">
+      <div className="content">
+        <div className="container">
+          <div className="content__top">
             <Categories></Categories>
             <Sort></Sort>
           </div>
-          <h2 class="content__title">Все пиццы</h2>
-          <div class="content__items">
-            <PizzaBlock items={items} />
+          <h2 className="content__title">Все пиццы</h2>
+          <div className="content__items">
+            {items.map((obj) => (
+              <PizzaBlock key={obj.id} {...obj} />
+            ))}
           </div>
         </div>
       </div>
