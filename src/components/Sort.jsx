@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-export default function Sort() {
+export default function Sort({ sortType, onClickSortType }) {
   const [visibleSort, setVisibleSort] = useState(false);
-  const [activeSort, setActiveSort] = useState(0);
-  const popup = ['популярности', 'цене', 'алфавиту'];
-  const onClickActiveSort = (i) => {
-    setActiveSort(i);
+
+  const popup = [
+    { name: 'популярности', sortProperty: 'rating' },
+    { name: 'цене', sortProperty: 'price' },
+    { name: 'алфавиту', sortProperty: 'title' },
+  ];
+
+  const onClickActiveSort = (sortProperty) => {
+    onClickSortType(sortProperty);
     setVisibleSort(false);
   };
+
   return (
     <div className="sort">
       <div onClick={() => setVisibleSort(!visibleSort)} className="sort__label">
@@ -23,17 +29,17 @@ export default function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>{popup[activeSort]}</span>
+        <span>{alert(popup[sortType])}</span>
       </div>
       {visibleSort && (
         <div className="sort__popup">
           <ul>
-            {popup.map((val, i) => (
+            {popup.map((obj, i) => (
               <li
-                onClick={() => onClickActiveSort(i)}
+                onClick={() => onClickActiveSort(obj.sortProperty)}
                 key={i}
-                className={activeSort === i ? 'active' : ''}>
-                {val}
+                className={sortType === obj.sortProperty ? 'active' : ''}>
+                {obj.name}
               </li>
             ))}
           </ul>

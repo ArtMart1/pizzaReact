@@ -8,6 +8,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 530px) {
+      flex-direction: column;
+    }
   }
 
   &__logo {
@@ -27,6 +30,9 @@
 
     p {
       color: #7b7b7b;
+    }
+    @media (max-width: 530px) {
+      margin-bottom: 20px;
     }
   }
 }
