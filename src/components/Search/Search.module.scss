@@ -1,0 +1,22 @@
+.root {
+  position: relative;
+}
+input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px 15px;
+  width: 300px;
+  border-radius: 12px;
+  font-size: 16px;
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+}
+.closeImg {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  &:hover {
+    fill: rgba(0, 0, 0, 0.3);
+  }
+}

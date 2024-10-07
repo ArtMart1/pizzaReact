@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Search from './Search';
 export default function Header() {
   return (
     <div className="header">
@@ -13,10 +14,11 @@ export default function Header() {
             </div>
           </div>
         </Link>
+        <Search></Search>
         <Link to="/cart">
           {' '}
           <div className="header__cart">
-            <a href="/cart.html" className="button button--cart">
+            <div className="button button--cart">
               <span>520 ₽</span>
               <div className="button__delimiter"></div>
               <svg
@@ -48,7 +50,7 @@ export default function Header() {
                 />
               </svg>
               <span>3</span>
-            </a>
+            </div>
           </div>
         </Link>
       </div>

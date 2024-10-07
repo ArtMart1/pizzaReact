@@ -7,12 +7,10 @@ export default function Sort({ sortType, onClickSortType }) {
     { name: 'цене', sortProperty: 'price' },
     { name: 'алфавиту', sortProperty: 'title' },
   ];
-
-  const onClickActiveSort = (sortProperty) => {
-    onClickSortType(sortProperty);
+  const onClickActiveSort = (i) => {
+    onClickSortType(i);
     setVisibleSort(false);
   };
-
   return (
     <div className="sort">
       <div onClick={() => setVisibleSort(!visibleSort)} className="sort__label">
@@ -29,16 +27,16 @@ export default function Sort({ sortType, onClickSortType }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>{alert(popup[sortType])}</span>
+        <span>{sortType.name}</span>
       </div>
       {visibleSort && (
         <div className="sort__popup">
           <ul>
             {popup.map((obj, i) => (
               <li
-                onClick={() => onClickActiveSort(obj.sortProperty)}
+                onClick={() => onClickActiveSort(obj)}
                 key={i}
-                className={sortType === obj.sortProperty ? 'active' : ''}>
+                className={sortType.sortProperty === obj.sortProperty ? 'active' : ''}>
                 {obj.name}
               </li>
             ))}
