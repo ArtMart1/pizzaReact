@@ -12,8 +12,8 @@ import Pagination from '../components/Pagination';
 import { setCategoryId } from '../redux/filterSlice';
 
 export default function Home() {
-  const { categoryId, sortType } = useSelector((state) => state.filter.categoryId);
-
+  const { categoryId, sort } = useSelector((state) => state.filter);
+  const sortType = sort.sortProperty;
   const dispatch = useDispatch();
   const { searchValue } = useContext(SearchContext);
   const [items, setItems] = useState([]);
