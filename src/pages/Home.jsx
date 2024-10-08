@@ -6,18 +6,22 @@ import Sceleton from '../components/PizzaBlock/Sceleton';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SearchContext } from '../App';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Pagination from '../components/Pagination';
+import { setCategoryId } from '../redux/filterSlice';
 
 export default function Home() {
-  const { searchValue } = React.useContext(SearchContext);
+  const { categoryId, sortType } = useSelector((state) => state.filter.categoryId);
+
+  const dispatch = useDispatch();
+  const { searchValue } = useContext(SearchContext);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
-  const [sortType, setSortType] = useState({
-    name: 'популярности',
-    sortProperty: 'rating',
-  });
+
+  const onClickCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
 
   const pizzasRender = items
 
@@ -33,14 +37,13 @@ export default function Home() {
     fetchData();
     window.scrollTo(0, 0);
   }, [categoryId, sortType]);
+
   return (
     <div className="content">
       <div className="container">
         <div className="content__top">
-          <Categories
-            categoryId={categoryId}
-            onClickCategory={(id) => setCategoryId(id)}></Categories>
-          <Sort sortType={sortType} onClickSortType={(i) => setSortType(i)}></Sort>
+          <Categories categoryId={categoryId} onClickCategory={onClickCategory}></Categories>
+          <Sort></Sort>
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
