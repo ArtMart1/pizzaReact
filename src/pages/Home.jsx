@@ -1,22 +1,26 @@
 import React, { useContext } from 'react';
 import Categories from '../components/Categories';
-import Sort from '../components/Sort';
+import Sort, { popup } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
+import qs from 'qs';
+import { useNavigate } from 'react-router-dom';
 
 import Pagination from '../components/Pagination';
-import { setCategoryId } from '../redux/filterSlice';
+import { setCategoryId, setFilters } from '../redux/filterSlice';
 
 export default function Home() {
+  const navigate = useNavigate();
   const { categoryId, sort } = useSelector((state) => state.filter);
   const sortType = sort.sortProperty;
   const dispatch = useDispatch();
   const { searchValue } = useContext(SearchContext);
   const [items, setItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const onClickCategory = (id) => {
@@ -27,16 +31,47 @@ export default function Home() {
 
     .filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
     .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const itemsResponse = await axios.get('http://localhost:4000/items?category=' + categoryId);
+      const limit = 4;
+      const start = currentPage * limit;
+      const end = start + limit;
+
+      const itemsResponse = await axios.get(
+        `http://localhost:4000/items?${
+          categoryId > 0 ? `category=${categoryId}&` : ''
+        }&_sort=${sortType}&_order=desc&_start=${start}&_end=${end}`,
+      );
+
       setItems(itemsResponse.data);
       setIsLoading(false);
     }
     fetchData();
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, currentPage, searchValue]);
+  useEffect(() => {
+    const queryString = qs.stringify({
+      sortProperty: sortType,
+      categoryId,
+      currentPage: currentPage + 1,
+    });
+
+    navigate(`?${queryString}`);
+  }, [categoryId, currentPage, searchValue]);
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = popup.find((obj) => obj.sortProperty === params.sortProperty);
+      dispatch(
+        setFilters({
+          ...params,
+          sort,
+        }),
+      );
+    }
+  }, []);
 
   return (
     <div className="content">
@@ -49,7 +84,7 @@ export default function Home() {
         <div className="content__items">
           {isLoading ? [...new Array(8)].map((_, i) => <Sceleton key={i} />) : pizzasRender}
         </div>
-        <Pagination></Pagination>
+        <Pagination onChangePage={(num) => setCurrentPage(num)}></Pagination>
       </div>
     </div>
   );
