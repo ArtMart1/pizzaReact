@@ -9,17 +9,17 @@ import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-
+import { fetchPizza } from '../redux/pizzaSlice';
 import Pagination from '../components/Pagination';
 import { setCategoryId, setFilters } from '../redux/filterSlice';
 
 export default function Home() {
   const navigate = useNavigate();
+  const items = useSelector((state) => state.pizza.items);
   const { categoryId, sort } = useSelector((state) => state.filter);
   const sortType = sort.sortProperty;
   const dispatch = useDispatch();
   const { searchValue } = useContext(SearchContext);
-  const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,24 +28,21 @@ export default function Home() {
   };
 
   const pizzasRender = items
-
     .filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
     .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const limit = 4;
-      const start = currentPage * limit;
-      const end = start + limit;
 
-      const itemsResponse = await axios.get(
-        `http://localhost:4000/items?${
-          categoryId > 0 ? `category=${categoryId}&` : ''
-        }&_sort=${sortType}&_order=desc&_start=${start}&_end=${end}`,
+      dispatch(
+        fetchPizza({
+          categoryId,
+          sortType,
+          currentPage,
+          searchValue,
+        }),
       );
-
-      setItems(itemsResponse.data);
       setIsLoading(false);
     }
     fetchData();
