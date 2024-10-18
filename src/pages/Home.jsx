@@ -4,7 +4,6 @@ import Sort, { popup } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
 import qs from 'qs';

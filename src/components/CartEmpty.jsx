@@ -4,9 +4,7 @@ export default function CartEmpty() {
   return (
     <div className="container container--cart">
       <div className="cart cart--empty">
-        <h2>
-          Корзина пустая <icon>😕</icon>
-        </h2>
+        <h2>Корзина пустая 😕</h2>
         <p>
           Вероятней всего, вы не заказывали ещё пиццу.
           <br />

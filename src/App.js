@@ -2,7 +2,8 @@ import './scss/app.scss';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
-import { Route, Routes } from 'react-router-dom';
+import FullPizza from './pages/FullPizza';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import { useState } from 'react';
 
@@ -16,8 +17,11 @@ function App() {
       <SearchContext.Provider value={{ searchValue, setSearchValue }}>
         <Header></Header>
         <Routes>
+          <Route path="/" element={<Navigate to="/pizzaReact" />} />
           <Route path="/pizzaReact" element={<Home></Home>}></Route>
           <Route path="/cartPizza" element={<Cart></Cart>}></Route>
+          <Route path="/pizza/:id" element={<FullPizza></FullPizza>}></Route>
+
           <Route path="*" element={<NotFound></NotFound>}></Route>
         </Routes>
       </SearchContext.Provider>

@@ -35,10 +35,20 @@ export const pizzaSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchPizza.fulfilled, (state, action) => {
-      // Add user to the state array
-      state.items = action.payload;
-    });
+    builder
+      .addCase(fetchPizza.pending, (state) => {
+        state.status = 'loading';
+        state.items = [];
+      })
+      .addCase(fetchPizza.fulfilled, (state, action) => {
+        // Add user to the state array
+        state.items = action.payload;
+      })
+
+      .addCase(fetchPizza.rejected, (state) => {
+        state.status = 'error';
+        state.items = [];
+      });
   },
 });
 
