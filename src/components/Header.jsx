@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <div className="header">
       <div className="container">
-        <Link to="/">
+        <Link to="/pizzaReact">
           <div className="header__logo">
             <img width="38" src="img/pizza-logo.svg" alt="Pizza logo" />
             <div>
