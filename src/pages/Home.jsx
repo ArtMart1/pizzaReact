@@ -14,13 +14,13 @@ import { setCategoryId, setFilters } from '../redux/filterSlice';
 
 export default function Home() {
   const navigate = useNavigate();
-  const items = useSelector((state) => state.pizza.items);
+  const { items, status } = useSelector((state) => state.pizza);
   const { categoryId, sort } = useSelector((state) => state.filter);
   const sortType = sort.sortProperty;
   const dispatch = useDispatch();
   const { searchValue } = useContext(SearchContext);
   const [currentPage, setCurrentPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const onClickCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -32,8 +32,6 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
-
       dispatch(
         fetchPizza({
           categoryId,
@@ -42,7 +40,6 @@ export default function Home() {
           searchValue,
         }),
       );
-      setIsLoading(false);
     }
     fetchData();
     window.scrollTo(0, 0);
@@ -78,7 +75,9 @@ export default function Home() {
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
-          {isLoading ? [...new Array(8)].map((_, i) => <Sceleton key={i} />) : pizzasRender}
+          {status === 'loading'
+            ? [...new Array(8)].map((_, i) => <Sceleton key={i} />)
+            : pizzasRender}
         </div>
         <Pagination onChangePage={(num) => setCurrentPage(num)}></Pagination>
       </div>

@@ -23,6 +23,7 @@ export const fetchPizza = createAsyncThunk('pizza/fetchPizzasStatus', async (par
 
 const initialState = {
   items: [],
+  status: 'idle',
 };
 
 export const pizzaSlice = createSlice({
@@ -43,6 +44,7 @@ export const pizzaSlice = createSlice({
       .addCase(fetchPizza.fulfilled, (state, action) => {
         // Add user to the state array
         state.items = action.payload;
+        state.status = 'success';
       })
 
       .addCase(fetchPizza.rejected, (state) => {
