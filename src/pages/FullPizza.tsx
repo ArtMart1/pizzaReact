@@ -5,7 +5,11 @@ import axios from 'axios';
 
 export default function FullPizza() {
   const { id } = useParams();
-  const [pizza, setPizza] = useState({});
+  const [pizza, setPizza] = useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
 
   useEffect(() => {
     const fetchFullPizza = async () => {
@@ -20,13 +24,13 @@ export default function FullPizza() {
       }
     };
     fetchFullPizza();
-  }, [id]);
+  }, []);
   if (!pizza) {
     return <div className="container">Загрузка...</div>;
   }
   return (
     <div className="container">
-      <img src={pizza.imageUrl} alt="" />
+      <img className="fullPizzaImg" src={pizza.imageUrl} alt="" />
       <h1>{pizza.title}</h1>
       <h2>{pizza.price}</h2>
     </div>

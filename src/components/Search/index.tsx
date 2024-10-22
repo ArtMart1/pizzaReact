@@ -4,22 +4,29 @@ import { SearchContext } from '../../App';
 import debounce from 'lodash.debounce';
 export default function Search() {
   const [value, setValue] = useState('');
-  const inputRef = useRef();
-  const { searchValue, setSearchValue } = React.useContext(SearchContext);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const searchContext = React.useContext(SearchContext);
+
+  if (!searchContext) {
+    throw new Error('ОшибОЧКА');
+  }
+
+  const { setSearchValue } = searchContext;
+
   const onClickClear = () => {
     setSearchValue('');
     setValue('');
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
   const searchCallback = useCallback(
-    debounce((str) => {
+    debounce((str: any) => {
       setSearchValue(str);
     }, 300),
     [],
   );
-  const onChangeSearchValue = (event) => {
-    setValue(event.target.value);
 
+  const onChangeSearchValue = (event: any) => {
+    setValue(event.target.value);
     searchCallback(event.target.value);
   };
   return (

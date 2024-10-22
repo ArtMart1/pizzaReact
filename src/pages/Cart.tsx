@@ -6,13 +6,13 @@ import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty';
 export default function Cart() {
   const dispatch = useDispatch();
-  const { totalPrice, items } = useSelector((slice) => slice.cart);
+  const { totalPrice, items } = useSelector((slice: any) => slice.cart);
   const onCLickClear = () => {
     if (window.confirm('Хотите очистить корзину,')) {
       dispatch(clearItems());
     }
   };
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
   if (!totalPrice) {
     return <CartEmpty />;
   }
@@ -87,7 +87,7 @@ export default function Cart() {
             </div>
           </div>
           <div className="content__items">
-            {items.map((item) => (
+            {items.map((item: any) => (
               <CartItem {...item} key={item.id} />
             ))}
           </div>

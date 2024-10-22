@@ -14,25 +14,32 @@ import { setCategoryId, setFilters } from '../redux/filterSlice';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort } = useSelector((state) => state.filter);
+  const { items, status } = useSelector((state: any) => state.pizza);
+  const { categoryId, sort } = useSelector((state: any) => state.filter);
   const sortType = sort.sortProperty;
   const dispatch = useDispatch();
-  const { searchValue } = useContext(SearchContext);
+  const searchContext = React.useContext(SearchContext);
+
+  if (!searchContext) {
+    throw new Error('ОшибОЧКА');
+  }
+
+  const { searchValue } = searchContext;
   const [currentPage, setCurrentPage] = useState(0);
   // const [isLoading, setIsLoading] = useState(true);
 
-  const onClickCategory = (id) => {
+  const onClickCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
 
   const pizzasRender = items
-    .filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
-    .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+    .filter((obj: any) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
+    .map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
     async function fetchData() {
       dispatch(
+        //@ts-ignore
         fetchPizza({
           categoryId,
           sortType,
@@ -79,7 +86,7 @@ export default function Home() {
             ? [...new Array(8)].map((_, i) => <Sceleton key={i} />)
             : pizzasRender}
         </div>
-        <Pagination onChangePage={(num) => setCurrentPage(num)}></Pagination>
+        <Pagination onChangePage={(num: number) => setCurrentPage(num)}></Pagination>
       </div>
     </div>
   );

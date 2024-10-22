@@ -1,23 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSortId } from '../redux/filterSlice';
-export const popup = [
+
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+export const popup: SortItem[] = [
   { name: 'популярности', sortProperty: 'rating' },
   { name: 'цене', sortProperty: 'price' },
   { name: 'алфавиту', sortProperty: 'title' },
 ];
 export default function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
+  const sort = useSelector((state: any) => state.filter.sort);
   const [visibleSort, setVisibleSort] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef(null);
 
-  const onClickActiveSort = (obj) => {
+  const onClickActiveSort = (obj: SortItem) => {
     dispatch(setSortId(obj));
     setVisibleSort(false);
   };
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (!event.composedPath().includes(sortRef.current)) {
         setVisibleSort(false);
       }
