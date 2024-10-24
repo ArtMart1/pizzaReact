@@ -1,4 +1,3 @@
-import React from 'react';
 import cartEmptyImg from '../img/empty-cart.png';
 export default function CartEmpty() {
   return (

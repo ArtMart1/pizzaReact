@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearItems } from '../redux/cartSlice';
+import { CartItems, clearItems, resetPrice } from '../redux/cartSlice';
 import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty';
 export default function Cart() {
@@ -10,9 +10,10 @@ export default function Cart() {
   const onCLickClear = () => {
     if (window.confirm('Хотите очистить корзину,')) {
       dispatch(clearItems());
+      dispatch(resetPrice());
     }
   };
-  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item: CartItems) => sum + item.count, 0);
   if (!totalPrice) {
     return <CartEmpty />;
   }

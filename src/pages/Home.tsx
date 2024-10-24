@@ -11,11 +11,12 @@ import { useNavigate } from 'react-router-dom';
 import { fetchPizza } from '../redux/pizzaSlice';
 import Pagination from '../components/Pagination';
 import { setCategoryId, setFilters } from '../redux/filterSlice';
+import { RootState } from '../redux/store';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { items, status } = useSelector((state: any) => state.pizza);
-  const { categoryId, sort } = useSelector((state: any) => state.filter);
+  const { items, status } = useSelector((state: RootState) => state.pizza);
+  const { categoryId, sort } = useSelector((state: RootState) => state.filter);
   const sortType = sort.sortProperty;
   const dispatch = useDispatch();
   const searchContext = React.useContext(SearchContext);
@@ -63,11 +64,16 @@ export default function Home() {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-      const sort = popup.find((obj) => obj.sortProperty === params.sortProperty);
+      const sort = popup.find((obj) => obj.sortProperty === params.sortProperty) || {
+        name: 'популярности',
+        sortProperty: 'rating',
+      };
       dispatch(
         setFilters({
           ...params,
           sort,
+          categoryId,
+          currentPage,
         }),
       );
     }

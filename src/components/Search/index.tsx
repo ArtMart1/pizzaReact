@@ -25,7 +25,7 @@ export default function Search() {
     [],
   );
 
-  const onChangeSearchValue = (event: any) => {
+  const onChangeSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     searchCallback(event.target.value);
   };
