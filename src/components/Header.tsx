@@ -12,8 +12,8 @@ export default function Header() {
   useEffect(() => {
     const json = JSON.stringify(items);
     localStorage.setItem('cart', json);
-    //@ts-ignore
-    console.log(JSON.parse(localStorage.getItem('cart')));
+    // //@ts-ignore
+    // console.log(JSON.parse(localStorage.getItem('cart')));
   }, [items]);
   return (
     <div className="header">
