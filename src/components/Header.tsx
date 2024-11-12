@@ -1,18 +1,28 @@
 import { Link, useLocation } from 'react-router-dom';
 import Search from './Search';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { useEffect } from 'react';
+import { checkAuth } from '../redux/authSlice';
+import { AppDispatch } from '../redux/store';
 
 export default function Header() {
   const { items, totalPrice } = useSelector((state: RootState) => state.cart);
   const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      dispatch(checkAuth());
+    }
+  }, []);
 
   useEffect(() => {
     const json = JSON.stringify(items);
     localStorage.setItem('cart', json);
-    // //@ts-ignore
+
     // console.log(JSON.parse(localStorage.getItem('cart')));
   }, [items]);
   return (
@@ -30,6 +40,10 @@ export default function Header() {
         {location.pathname !== '/cartPizza' ? (
           <>
             <Search></Search>
+            <Link to="/loginForm">
+              <p>{isAuth ? 'Пользователь авторизован!' : 'Авторизуйтесь'}</p>
+              <img width="38" src="img/user.png" alt="user logo" />
+            </Link>
             <Link to="/cartPizza">
               {' '}
               <div className="header__cart">
